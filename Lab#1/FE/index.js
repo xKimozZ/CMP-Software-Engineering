@@ -31,6 +31,11 @@ function fetchEmployees() {
 
 // TODO
 // add event listener to submit button
+var submitBtn = document.querySelector("#submitBtn")
+submitBtn.addEventListener('click', function(event){
+  event.preventDefault();
+  createEmployee();
+});
 
 // TODO
 // add event listener to delete button
@@ -38,8 +43,26 @@ function fetchEmployees() {
 // TODO
 function createEmployee (){
   // get data from input field
+  var empName = (document.querySelector("#name")).value;
+  var empId = (document.querySelector("#id")).value;
+  const newEmployee = { id: empId, name: empName};
   // send data to BE
+  fetch('http://localhost:3000/api/v1/employee', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newEmployee)
+  })
+  .then(data => {
+    console.log('Response:', data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
   // call fetchEmployees
+  fetchEmployees()
+  location.reload();
 }
 
 // TODO
