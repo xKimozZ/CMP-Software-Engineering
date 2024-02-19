@@ -39,6 +39,12 @@ submitBtn.addEventListener('click', function(event){
 
 // TODO
 // add event listener to delete button
+var tableBody = document.getElementById('dataTable');
+tableBody.addEventListener('click', function(event) {
+  if (event.target.classList.contains('btn-danger')) {
+    deleteEmployee();
+  }
+});
 
 // TODO
 function createEmployee (){
@@ -68,8 +74,22 @@ function createEmployee (){
 // TODO
 function deleteEmployee (){
   // get id
+  var row = event.target.closest('tr');
+  var idCell = row.querySelector('td');
+  var id = idCell.textContent;
   // send id to BE
+  fetch('http://localhost:3000/api/v1/employee/' + id, {
+    method: 'DELETE'
+  })
+  .then(data => {
+    console.log('Response:', data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
   // call fetchEmployees
+  fetchEmployees()
+  location.reload();
 }
 
 fetchEmployees()
